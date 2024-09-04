@@ -88,13 +88,39 @@ func (l *Lexer) scanToken() {
 	case '\t':
 	case '\n':
 		l.line += 1
+	case '"':
+		l.readString()
 	default:
 		l.addToken(token.ILLEGAL, ch)
 	}
 }
 
-func (l *Lexer) addToken(tokenType token.TokenType, ch byte) {
-	l.tokens = append(l.tokens, token.Token{Type: tokenType, Literal: string(ch), Line: l.line})
+func (l *Lexer) readString() {
+	for l.peek() != '"' && !l.isAtEnd() {
+		if l.peek() == '\n' {
+			l.line += 1
+		}
+		l.advance()
+	}
+
+	if l.isAtEnd() {
+		l.addToken(token.ILLEGAL, "ILLEGAL")
+	}
+
+	l.advance()
+	value := l.input[l.start+1 : l.current-1]
+	l.addToken(token.STRING, value)
+}
+
+func (l *Lexer) addToken(tokenType token.TokenType, literal interface{}) {
+	val := ""
+	switch v := literal.(type) {
+	case string:
+		val = v
+	case byte:
+		val = string(v)
+	}
+	l.tokens = append(l.tokens, token.Token{Type: tokenType, Literal: val, Line: l.line})
 }
 
 func (l *Lexer) isAtEnd() bool {
