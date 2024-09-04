@@ -7,7 +7,7 @@ import (
 
 func TestLexer(t *testing.T) {
 	t.Run("simple first test", func(t *testing.T) {
-		input := `{}*;.`
+		input := `{}*;.=!===`
 
 		tests := []struct {
 			expectedType    token.TokenType
