@@ -11,13 +11,11 @@ func main() {
 	if len(args) > 1 {
 		fmt.Println("Usage: golox [script]")
 		os.Exit(64)
-	} else if len(args) == 1 {
-		runFile(args[0])
 	} else {
 		repl.Start(os.Stdin, os.Stdout)
 	}
 }
 
-func runFile(path string) {
+// func runFile(path string) {
 
-}
+// }

@@ -35,7 +35,7 @@ func TestLexer(t *testing.T) {
 
 		l := New(input)
 
-		tokens := l.scanTokens()
+		tokens := l.GetTokens()
 
 		for i, tt := range tests {
 			if tokens[i].Type != tt.expectedType {
