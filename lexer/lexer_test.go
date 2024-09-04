@@ -32,18 +32,23 @@ func TestLexer(t *testing.T) {
 			{token.LESS_EQUAL, "<="},
 			{token.EQUAL_EQUAL, "=="},
 		}
-
-		l := New(input)
-
-		tokens := l.GetTokens()
-
-		for i, tt := range tests {
-			if tokens[i].Type != tt.expectedType {
-				t.Fatalf("tests[%d] - tokentype wrong. expected %q got %q", i, tt.expectedType, tokens[i].Type)
-			}
-			if string(tokens[i].Type) != tt.expectedLiteral {
-				t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q", i, tt.expectedLiteral, tokens[i].Literal)
-			}
-		}
+		assertCorrectTokens(t, input, tests)
 	})
+}
+
+func assertCorrectTokens(t testing.TB, input string, tests []struct {
+	expectedType    token.TokenType
+	expectedLiteral string
+}) {
+	l := New(input)
+	tokens := l.GetTokens()
+
+	for i, tt := range tests {
+		if tokens[i].Type != tt.expectedType {
+			t.Fatalf("tests[%d] - tokentype wrong. expected %q got %q", i, tt.expectedType, tokens[i].Type)
+		}
+		if string(tokens[i].Type) != tt.expectedLiteral {
+			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q", i, tt.expectedLiteral, tokens[i].Literal)
+		}
+	}
 }
